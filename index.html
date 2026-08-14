@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسالة خاصة 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #0d0d11; color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; position: relative; }
+        .bg-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255, 65, 108, 0.25) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; }
+        .container { position: relative; z-index: 10; width: 90%; max-width: 380px; text-align: center; margin: 20px 0; }
+        .card { display: none; flex-direction: column; align-items: center; justify-content: center; animation: slideUp 0.5s ease-out; background: rgba(255, 255, 255, 0.04); padding: 25px 18px; border-radius: 28px; border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .card.active { display: flex; }
+        
+        /* تعديل الأيقونات */
+        .avatar-box { width: 90px; height: 90px; background: rgba(255, 255, 255, 0.06); border: 1.5px solid rgba(255, 255, 255, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(255, 65, 108, 0.2); }
+        .avatar-box img { width: 60px; height: 60px; object-fit: contain; }
+
+        p, h3 { font-size: 1.05rem; line-height: 1.6; margin-bottom: 18px; color: #f1f1f1; }
+        .btn { background: linear-gradient(135deg, #ff3b60, #ff5e3a); color: white; border: none; padding: 12px 30px; border-radius: 22px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(255, 59, 96, 0.35); transition: all 0.2s ease; margin: 6px; }
+        .btn:active { transform: scale(0.94); }
+        .btn-sec { background: rgba(255, 255, 255, 0.1); box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.15); transition: transform 0.2s ease; }
+        .dates-box { background: rgba(255, 255, 255, 0.05); border-radius: 18px; padding: 12px; width: 100%; margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .date-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.92rem; padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .date-item:last-child { border-bottom: none; }
+        .chat-img-container { width: 100%; height: 280px; border-radius: 16px; overflow: hidden; margin: 12px 0; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
+        .chat-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .dots-container { position: fixed; bottom: 20px; z-index: 10; display: flex; gap: 6px; }
+        .dot { width: 7px; height: 7px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; transition: 0.4s; }
+        .dot.active { background: #ff3b60; width: 18px; border-radius: 10px; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+    <audio id="bgMusic" src="./music.mp3" loop></audio>
+
+    <div class="container">
+        <!-- Step 1 -->
+        <div class="card active" id="step1">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/musical-note_1f3b5.png" alt="icon"></div>
+            <p>شغلي الصوت واستمتعي بالرسالة 🤍</p>
+            <button class="btn" onclick="playMusic()">تشغيل الموسيقى ▶️</button>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="card" id="step2">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/teddy-bear_1f9f8.png" alt="icon"></div>
+            <h3>هلووو زنوبتي 🥺</h3>
+            <button class="btn" onclick="nextStep(3)">المزيد 👈</button>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="card" id="step3">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/love-letter_1f48c.png" alt="icon"></div>
+            <h3>عندي رسالة صريحة الج من القلب...</h3>
+            <button class="btn" onclick="nextStep(4)">شنو هي؟ 🙈</button>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="card" id="step4">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/cherry-blossom_1f338.png" alt="icon"></div>
+            <p>زنوبتي احبج مو بس لأن انتِ حبيبتي، احبج لأن وياج احس الدنيا اهدأ وأحلى. وجودج بحياتي يعنيلي هواي واتمنى ابقى الشخص اللي يفرح قلبج دوم، انتِ كلشي بحياتي عمري وقلبي وبنيتي وعشقي وكلشي يعني كلشي شحجي قليل بحقج، واحبج حـُب ابد ما تكدرين تتخيلينه والله، وباقي وياج للموت 🫂❤️‍🔥</p>
+            <button class="btn" onclick="nextStep(5)">التالي ❤️</button>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="card" id="step5">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/question-mark_2753.png" alt="icon"></div>
+            <h3>سؤال موجه لقلبج: تحبيني؟ 🙈</h3>
+            <div>
+                <button class="btn" onclick="nextStep(6)">اييي أحبك ❤️</button>
+                <button class="btn btn-sec" onclick="moveNoButton(this)">لا 🤐</button>
+            </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="card" id="step6">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/sparkling-heart_1f496.png" alt="icon"></div>
+            <h3>اعرف واني اموت بيج 🫂🫀✨</h3>
+            <p style="font-size: 0.95rem; color: #aaa;">تعالي شوف المحطة الجاية للذكريات 💖</p>
+            <button class="btn" onclick="nextStep(7)">ذكرياتنا ✨</button>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="card" id="step7">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/calendar_1f4c5.png" alt="icon"></div>
+            <h3>تواريخ انحفرت بقلبي 🗓️</h3>
+            
+            <div class="dates-box">
+                <div class="date-item">
+                    <span>تاريخ أول تعارفنا:</span>
+                    <strong style="color: #ff5e3a;">2021 / 2 / 15</strong>
+                </div>
+                <div class="date-item">
+                    <span>تاريخ أول لقاء بينّا:</span>
+                    <strong style="color: #ff3b60;">2024 / 7 / 11</strong>
+                </div>
+            </div>
+
+            <button class="btn" onclick="nextStep(8)">شوف الصورة 🖼️</button>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="card" id="step8">
+            <div class="avatar-box"><img src="https://em-content.zobj.net/source/apple/391/framed-picture_1f5bc-fe0f.png" alt="icon"></div>
+            <h3>أحلى صورة عندي 💖</h3>
+
+            <div class="chat-img-container">
+                <img id="chatImg" src="./1.jpg" onerror="handleImgError(this)" alt="صورة">
+            </div>
+
+            <p style="font-size: 0.95rem; margin-top: 15px; color: #ddd;">
+                كل لحظة وكل صورة تجمعنا تسوى الدنيا بقلبي، أعدج أكون دائماً سندج، وجودج بالحياة هو أجمل شيء صار لي ❤️✨
+            </p>
+        </div>
+    </div>
+
+    <!-- النقاط -->
+    <div class="dots-container">
+        <div class="dot active" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+        <div class="dot" id="dot4"></div>
+        <div class="dot" id="dot5"></div>
+        <div class="dot" id="dot6"></div>
+        <div class="dot" id="dot7"></div>
+        <div class="dot" id="dot8"></div>
+    </div>
+
+    <script>
+        function playMusic() {
+            var music = document.getElementById("bgMusic");
+            music.play().catch(e => console.log("الصوت محتاج تفاعل"));
+            nextStep(2);
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            document.getElementById('dot' + step).classList.add('active');
+        }
+
+        function moveNoButton(btn) {
+            var x = (Math.random() - 0.5) * 200;
+            var y = (Math.random() - 0.5) * 200;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function handleImgError(img) {
+            var currentSrc = img.src;
+            if (currentSrc.endsWith('.jpg')) { img.src = currentSrc.replace('.jpg', '.png'); }
+            else if (currentSrc.endsWith('.png')) { img.src = currentSrc.replace('.png', '.jpeg'); }
+        }
+    </script>
+</body>
+</html>
